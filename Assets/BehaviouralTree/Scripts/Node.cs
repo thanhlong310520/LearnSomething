@@ -81,68 +81,68 @@ public class Selector : Node
 
 
 
-    /// <summary>
-    /// ParalledNode
-    /// phải thỏa mãn điều kiện parallel policy đề ra
-    /// </summary>
-    public enum ParallelPolicy
+}
+/// <summary>
+/// ParalledNode
+/// phải thỏa mãn điều kiện parallel policy đề ra
+/// </summary>
+public enum ParallelPolicy
+{
+    RequireOne, // chỉ cần 1 Success thì cả Parallel Success
+    RequireAll  // tất cả Success thì mới Success
+}
+
+public class Parallel : Node
+{
+    private List<Node> _children;
+    private ParallelPolicy _successPolicy;
+    private ParallelPolicy _failurePolicy;
+
+    public Parallel(List<Node> children, ParallelPolicy successPolicy, ParallelPolicy failurePolicy)
     {
-        RequireOne, // chỉ cần 1 Success thì cả Parallel Success
-        RequireAll  // tất cả Success thì mới Success
+        _children = children;
+        _successPolicy = successPolicy;
+        _failurePolicy = failurePolicy;
     }
 
-    public class Parallel : Node
+    public override NodeState Evaluate()
     {
-        private List<Node> _children;
-        private ParallelPolicy _successPolicy;
-        private ParallelPolicy _failurePolicy;
+        int successCount = 0;
+        int failureCount = 0;
 
-        public Parallel(List<Node> children, ParallelPolicy successPolicy, ParallelPolicy failurePolicy)
+        foreach (var node in _children)
         {
-            _children = children;
-            _successPolicy = successPolicy;
-            _failurePolicy = failurePolicy;
+            var result = node.Evaluate();
+            if (result == NodeState.Success) successCount++;
+            if (result == NodeState.Failure) failureCount++;
         }
 
-        public override NodeState Evaluate()
+        // Success policy
+        if (_successPolicy == ParallelPolicy.RequireOne && successCount > 0)
         {
-            int successCount = 0;
-            int failureCount = 0;
-
-            foreach (var node in _children)
-            {
-                var result = node.Evaluate();
-                if (result == NodeState.Success) successCount++;
-                if (result == NodeState.Failure) failureCount++;
-            }
-
-            // Success policy
-            if (_successPolicy == ParallelPolicy.RequireOne && successCount > 0)
-            {
-                _state = NodeState.Success;
-                return _state;
-            }
-            if (_successPolicy == ParallelPolicy.RequireAll && successCount == _children.Count)
-            {
-                _state = NodeState.Success;
-                return _state;
-            }
-
-            // Failure policy
-            if (_failurePolicy == ParallelPolicy.RequireOne && failureCount > 0)
-            {
-                _state = NodeState.Failure;
-                return _state;
-            }
-            if (_failurePolicy == ParallelPolicy.RequireAll && failureCount == _children.Count)
-            {
-                _state = NodeState.Failure;
-                return _state;
-            }
-
-            _state = NodeState.Running;
+            _state = NodeState.Success;
             return _state;
         }
+        if (_successPolicy == ParallelPolicy.RequireAll && successCount == _children.Count)
+        {
+            _state = NodeState.Success;
+            return _state;
+        }
+
+        // Failure policy
+        if (_failurePolicy == ParallelPolicy.RequireOne && failureCount > 0)
+        {
+            _state = NodeState.Failure;
+            return _state;
+        }
+        if (_failurePolicy == ParallelPolicy.RequireAll && failureCount == _children.Count)
+        {
+            _state = NodeState.Failure;
+            return _state;
+        }
+
+        _state = NodeState.Running;
+        return _state;
     }
-    #endregion
 }
+#endregion
