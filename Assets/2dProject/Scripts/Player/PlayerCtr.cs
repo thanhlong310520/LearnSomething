@@ -5,18 +5,26 @@ public class PlayerCtr : MonoBehaviour
     [SerializeField] Rigidbody2D rig;
     [SerializeField] Animator anim;
     [SerializeField] Transform groundCheck;
+    [SerializeField] Transform wallCheck;
 
     [SerializeField] int amountOfJump = 2;
     
     [SerializeField] float movementSpeed = 5;
     [SerializeField] float jumpForce = 10;
     [SerializeField] float groundCheckRadius = 0.1f;
+    [SerializeField] float wallCheckDistance = 0.5f;
+    [SerializeField] float wallSlideSpeed = 0.5f;
+    [SerializeField] float movementForceInAir = 4;
+    [SerializeField] float airDragMultiplier = 0.75f;
+    [SerializeField] float variableJumpHeightMultiplier = 0.95f;
 
     [SerializeField] LayerMask whatIsGround;
     [SerializeField] float movementInputDirection;
     [SerializeField] bool isFacingRight = true;
     [SerializeField] bool isWalking = false;
+    [SerializeField] bool isWallSliding;
     [SerializeField] bool isGround;
+    [SerializeField] bool isTouchingWalls;
     [SerializeField] bool canJump;
 
     int amountOfJumpLeft = 0;
@@ -34,6 +42,7 @@ public class PlayerCtr : MonoBehaviour
         CheckMovementDirection();
         UpdateAnimation();
         CheckIfCanJump();
+        CheckIfWallSliding();
     }
     private void FixedUpdate()
     {
@@ -49,6 +58,11 @@ public class PlayerCtr : MonoBehaviour
         {
             Jump();
         }
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            rig.linearVelocityY = rig.linearVelocityY * variableJumpHeightMultiplier;
+        }
+
     }
     void CheckMovementDirection()
     {
@@ -63,7 +77,8 @@ public class PlayerCtr : MonoBehaviour
     }
     void CheckSurroundings()
     {
-        isGround = Physics2D.OverlapCircle(groundCheck.position,groundCheckRadius,whatIsGround);
+        isGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        isTouchingWalls = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
     }
     void CheckIfCanJump()
     {
@@ -73,15 +88,47 @@ public class PlayerCtr : MonoBehaviour
         }
         canJump = amountOfJumpLeft > 0 ? true : false;
     }
+
+    void CheckIfWallSliding()
+    {
+        if (isTouchingWalls && rig.linearVelocityY < 0 && !isGround) isWallSliding = true;
+        else isWallSliding = false;
+    }
     void UpdateAnimation()
     {
         anim.SetBool("isWalking", isWalking);
         anim.SetBool("isGround", isGround);
+        anim.SetBool("isWallSliding", isWallSliding);
         anim.SetFloat("yVelocity", rig.linearVelocityY);
     }
     void ApplyMovement()
     {
-        rig.linearVelocity = new Vector2(movementSpeed * movementInputDirection, rig.linearVelocity.y);
+        if (isGround)
+        {
+            rig.linearVelocity = new Vector2(movementSpeed * movementInputDirection, rig.linearVelocity.y);
+        }
+        else if(!isGround && !isWallSliding && movementInputDirection != 0)
+        {
+            Vector2 forceToAdd = new Vector2(movementInputDirection * movementForceInAir, 0);
+            rig.AddForce(forceToAdd);  
+
+            if(Mathf.Abs(rig.linearVelocityX) > movementSpeed)
+            {
+                rig.linearVelocityX = movementSpeed * movementInputDirection;
+            }
+        }
+
+        else if(!isGround && !isWallSliding && movementInputDirection == 0)
+        {
+            rig.linearVelocityX = rig.linearVelocity.x * airDragMultiplier;
+        }
+        if(isWallSliding)
+        {
+            if(rig.linearVelocityY < 0 && -rig.linearVelocityY > wallSlideSpeed)
+            {
+                rig.linearVelocityY = -wallSlideSpeed;
+            }
+        } 
     }
     void Jump()
     {
@@ -93,8 +140,11 @@ public class PlayerCtr : MonoBehaviour
     }
     void Flip()
     {
-        isFacingRight = !isFacingRight;
-        transform.Rotate(0, 180, 0);
+        if (!isWallSliding)
+        {
+            isFacingRight = !isFacingRight;
+            transform.Rotate(0, 180, 0);
+        }
         
     }
     #endregion
@@ -102,5 +152,6 @@ public class PlayerCtr : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position,groundCheckRadius);  
+        Gizmos.DrawLine(wallCheck.position,new Vector3(wallCheck.position.x +wallCheckDistance,wallCheck.position.y));
     }
 }
