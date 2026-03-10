@@ -235,7 +235,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Base_Shield_Parry_0: -8691536426513561298
+      Base_Shield_Parry_1: 2185513549054318330
+      Base_Shield_Parry_2: -1951971392744982669
+      Base_Shield_Parry_3: 5626886076405977135
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

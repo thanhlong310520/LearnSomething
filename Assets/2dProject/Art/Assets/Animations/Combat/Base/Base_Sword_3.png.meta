@@ -260,7 +260,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Base_Sword_3_0: -6582019687447439630
+      Base_Sword_3_1: -6188004639867425472
+      Base_Sword_3_2: -8670808341344803406
+      Base_Sword_3_3: -6428811346629437336
+      Base_Sword_3_4: -5706248968957320215
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

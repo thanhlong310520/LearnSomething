@@ -260,7 +260,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Base_Shield_Exit_0: 7935304989408476785
+      Base_Shield_Exit_1: 4464213392001976344
+      Base_Shield_Exit_2: -8437318475303023609
+      Base_Shield_Exit_3: -2633153701492456721
+      Base_Shield_Exit_4: -7661625823412154654
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

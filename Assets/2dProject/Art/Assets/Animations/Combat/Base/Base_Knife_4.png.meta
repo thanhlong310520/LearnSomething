@@ -260,7 +260,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Base_Knife_4_0: 2817182486167512419
+      Base_Knife_4_1: -130509817459942949
+      Base_Knife_4_2: 4287302193038366461
+      Base_Knife_4_3: 524685728771631440
+      Base_Knife_4_4: 865339102784150000
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

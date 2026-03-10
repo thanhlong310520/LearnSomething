@@ -260,7 +260,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Weapon1_Book_Throw_0: -7251658480155456704
+      Weapon1_Book_Throw_1: 895958579313519380
+      Weapon1_Book_Throw_2: 6016613378836439185
+      Weapon1_Book_Throw_3: -6191818940231461554
+      Weapon1_Book_Throw_4: -2138056587178806665
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
