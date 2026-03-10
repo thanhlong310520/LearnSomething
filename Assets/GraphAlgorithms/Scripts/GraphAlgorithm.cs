@@ -13,10 +13,10 @@ namespace GraphAlgorithms
 
             queue.Enqueue(start);
             visited.Add(start);
-
+            Node current;
             while (queue.Count > 0)
             {
-                Node current = queue.Dequeue();
+                current = queue.Dequeue();
 
                 ActionHandleNode?.Invoke(current);
 
@@ -39,10 +39,10 @@ namespace GraphAlgorithms
 
             queue.Enqueue(start);
             visited.Add(start);
-
+            Node current;
             while (queue.Count > 0)
             {
-                Node current = queue.Dequeue();
+                current = queue.Dequeue();
 
                 if (current == goal)
                     break;
@@ -68,10 +68,11 @@ namespace GraphAlgorithms
             HashSet<Node> visited = new HashSet<Node>();
 
             stack.Push(start);
+            Node current;
 
             while (stack.Count > 0)
             {
-                Node current = stack.Pop();
+                current = stack.Pop();
 
                 if (visited.Contains(current))
                     continue;
@@ -94,10 +95,10 @@ namespace GraphAlgorithms
             Dictionary<Node, Node> parent = new Dictionary<Node, Node>();
 
             stack.Push(start);
-
+            Node current;
             while (stack.Count > 0)
             {
-                Node current = stack.Pop();
+                current = stack.Pop();
 
                 if (visited.Contains(current))
                     continue;

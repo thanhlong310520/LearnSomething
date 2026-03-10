@@ -149,7 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbors:
-  - {fileID: 1216944970}
   - {fileID: 2093498048}
 --- !u!4 &900049747
 Transform:
@@ -471,7 +470,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neighbors:
   - {fileID: 900049746}
-  - {fileID: 1216944970}
 --- !u!4 &2114153361
 Transform:
   m_ObjectHideFlags: 0
