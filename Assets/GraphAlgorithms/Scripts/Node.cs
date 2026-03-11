@@ -5,13 +5,19 @@ namespace GraphAlgorithms
 {
     public class Node : MonoBehaviour
     {
-        public List<Node> neighbors = new List<Node>();
-        public void AddNeighbor(Node neighbor)
+        public List<Edge> neighbors = new List<Edge>();
+        public void AddNeighbor(Edge neighbor)
         {
             if (!neighbors.Contains(neighbor))
             {
                 neighbors.Add(neighbor);
             }
         }
+    }
+
+    [System.Serializable] public struct Edge
+    {
+        public Node target;
+        public float dis;
     }
 }
