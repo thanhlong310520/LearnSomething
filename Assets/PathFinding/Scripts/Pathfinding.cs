@@ -6,21 +6,26 @@ namespace AStar
 {
     public static class Pathfinding
     {
-        public static List<GraphNode> GraphAStarFindPath(GraphNode startNode, GraphNode targetNode)
+        
+        public static List<GridNode> AstarPath(GridMap grid, Vector2Int startPos, Vector2Int goalPos)
         {
-            List<GraphNode> openSet = new List<GraphNode>();
-            HashSet<GraphNode> closedSet = new HashSet<GraphNode>();
+            GridNode start = grid.grid[startPos.x, startPos.y];
+            GridNode goal = grid.grid[goalPos.x, goalPos.y];
 
-            openSet.Add(startNode);
+            List<GridNode> openSet = new List<GridNode>();
+            HashSet<GridNode> closedSet = new HashSet<GridNode>();
+
+            openSet.Add(start);
 
             while (openSet.Count > 0)
             {
-                GraphNode current = openSet[0];
+                GridNode current = openSet[0];
 
                 for (int i = 1; i < openSet.Count; i++)
                 {
                     if (openSet[i].FCost < current.FCost ||
-                       (openSet[i].FCost == current.FCost && openSet[i].hCost < current.hCost))
+                       openSet[i].FCost == current.FCost &&
+                       openSet[i].hCost < current.hCost)
                     {
                         current = openSet[i];
                     }
@@ -29,20 +34,20 @@ namespace AStar
                 openSet.Remove(current);
                 closedSet.Add(current);
 
-                if (current == targetNode)
-                    return RetracePath(startNode, targetNode);
+                if (current == goal)
+                    return RetracePath(start, goal);
 
-                foreach (var neighbor in current.neighbors)
+                foreach (var neighbor in grid.GetNeighbors(current))
                 {
-                    if (closedSet.Contains(neighbor))
+                    if (!neighbor.walkable || closedSet.Contains(neighbor))
                         continue;
 
-                    float newCost = current.gCost + Distance(current, neighbor);
+                    int newCost = current.gCost + Distance(current, neighbor);
 
                     if (newCost < neighbor.gCost || !openSet.Contains(neighbor))
                     {
                         neighbor.gCost = newCost;
-                        neighbor.hCost = Distance(neighbor, targetNode);
+                        neighbor.hCost = Distance(neighbor, goal);
                         neighbor.parent = current;
 
                         if (!openSet.Contains(neighbor))
@@ -54,10 +59,11 @@ namespace AStar
             return null;
         }
 
-        static List<GraphNode> RetracePath(GraphNode start, GraphNode end)
+        static List<GridNode> RetracePath(GridNode start, GridNode end)
         {
-            List<GraphNode> path = new List<GraphNode>();
-            GraphNode current = end;
+            List<GridNode> path = new List<GridNode>();
+
+            GridNode current = end;
 
             while (current != start)
             {
@@ -69,9 +75,9 @@ namespace AStar
             return path;
         }
 
-        static float Distance(GraphNode a, GraphNode b)
+        static int Distance(GridNode a, GridNode b)
         {
-            return Vector3.Distance(a.position, b.position);
+            return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
         }
     }
 }
