@@ -17,13 +17,13 @@ public class EnemySensor : MonoBehaviour
 
     void Update()
     {
-        bool wasVisible = worldState.Get("enemyVisible");
+        bool wasVisible = worldState.Data.Get("enemyVisible");
 
         // Phát hiện kẻ địch trong tầm nhìn
         Collider[] hits = Physics.OverlapSphere(transform.position, sightRange, enemyLayer);
         bool enemyNow = hits.Length > 0;
 
-        worldState.Set("enemyVisible", enemyNow);
+        worldState.Data.Set("enemyVisible", enemyNow);
 
         // Nếu trạng thái thay đổi → replan
         if (wasVisible != enemyNow)

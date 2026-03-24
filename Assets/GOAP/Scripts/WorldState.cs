@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class WorldState : MonoBehaviour
 {
+    public WorldStateData Data { get; private set; } = new WorldStateData();
+}
+
+public class WorldStateData
+{
     private Dictionary<string, bool> states = new Dictionary<string, bool>();
 
     public void Set(string key, bool value) => states[key] = value;
@@ -28,9 +33,9 @@ public class WorldState : MonoBehaviour
     }
 
     // Tạo bản sao để planner mô phỏng
-    public WorldState Clone()
+    public WorldStateData Clone()
     {
-        var clone = new WorldState();
+        var clone = new WorldStateData();
         foreach (var kv in states)
             clone.Set(kv.Key, kv.Value);
         return clone;

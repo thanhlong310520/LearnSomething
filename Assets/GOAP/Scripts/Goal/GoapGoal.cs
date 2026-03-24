@@ -11,5 +11,5 @@ public abstract class GoapGoal : MonoBehaviour
     public abstract Dictionary<string, bool> DesiredState { get; }
 
     // Có nên kích hoạt goal này không?
-    public virtual bool IsValid(WorldState worldState) => true;
+    public virtual bool IsValid(WorldStateData worldState) => true;
 }

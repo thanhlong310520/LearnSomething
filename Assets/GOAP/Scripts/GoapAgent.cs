@@ -44,14 +44,14 @@ public class GoapAgent : MonoBehaviour
     {
         // Chọn goal có priority cao nhất còn valid
         activeGoal = goals
-            .Where(g => g.IsValid(worldState))
+            .Where(g => g.IsValid(worldState.Data))
             .OrderByDescending(g => g.Priority)
             .FirstOrDefault();
 
         if (activeGoal == null) return;
 
         // Lập kế hoạch
-        currentPlan = planner.Plan(worldState, activeGoal.DesiredState, actions);
+        currentPlan = planner.Plan(worldState.Data, activeGoal.DesiredState, actions);
 
         if (currentPlan != null && currentPlan.Count > 0)
         {
@@ -71,7 +71,7 @@ public class GoapAgent : MonoBehaviour
         if (currentAction == null) { agentState = AgentState.Idle; return; }
 
         // Thực hiện action
-        bool success = currentAction.Perform(worldState);
+        bool success = currentAction.Perform(worldState.Data);
 
         if (!success)
         {

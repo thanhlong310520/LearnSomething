@@ -17,10 +17,10 @@ public abstract class GoapAction : MonoBehaviour
     public Dictionary<string, bool> Effects => effects;
 
     // Kiểm tra preconditions trong world state thực (runtime check)
-    public virtual bool CheckProceduralPrecondition(WorldState ws) => true;
+    public virtual bool CheckProceduralPrecondition(WorldStateData ws) => true;
 
     // Bắt đầu thực hiện action
-    public abstract bool Perform(WorldState ws);
+    public abstract bool Perform(WorldStateData ws);
 
     // Action đã hoàn thành chưa?
     public abstract bool IsDone();

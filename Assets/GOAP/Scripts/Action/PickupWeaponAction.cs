@@ -14,7 +14,7 @@ public class PickupWeaponAction : GoapAction
         Cost = 2f;
     }
 
-    public override bool CheckProceduralPrecondition(WorldState ws)
+    public override bool CheckProceduralPrecondition(WorldStateData ws)
     {
         // Tìm vũ khí gần nhất trong scene
         var weapons = GameObject.FindGameObjectsWithTag("Weapon");
@@ -27,7 +27,7 @@ public class PickupWeaponAction : GoapAction
         return weaponTransform != null;
     }
 
-    public override bool Perform(WorldState ws)
+    public override bool Perform(WorldStateData ws)
     {
         if (weaponTransform == null) return false;
 

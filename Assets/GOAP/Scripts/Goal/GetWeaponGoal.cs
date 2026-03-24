@@ -11,5 +11,5 @@ public class GetWeaponGoal : GoapGoal
     public override Dictionary<string, bool> DesiredState =>
         new Dictionary<string, bool> { { "hasWeapon", true } };
 
-    public override bool IsValid(WorldState ws) => !ws.Get("hasWeapon");
+    public override bool IsValid(WorldStateData ws) => !ws.Get("hasWeapon");
 }

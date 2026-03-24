@@ -17,7 +17,7 @@ public class AttackEnemyAction : GoapAction
         Cost = 1f;
     }
 
-    public override bool CheckProceduralPrecondition(WorldState ws)
+    public override bool CheckProceduralPrecondition(WorldStateData ws)
     {
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         float minDist = float.MaxValue;
@@ -29,7 +29,7 @@ public class AttackEnemyAction : GoapAction
         return enemy != null;
     }
 
-    public override bool Perform(WorldState ws)
+    public override bool Perform(WorldStateData ws)
     {
         if (enemy == null) { done = true; return true; }
 

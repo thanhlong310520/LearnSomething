@@ -9,5 +9,5 @@ public class KillEnemyGoal : GoapGoal
     public override Dictionary<string, bool> DesiredState =>
         new Dictionary<string, bool> { { "enemyDead", true } };
 
-    public override bool IsValid(WorldState ws) => ws.Get("enemyVisible");
+    public override bool IsValid(WorldStateData ws) => ws.Get("enemyVisible");
 }

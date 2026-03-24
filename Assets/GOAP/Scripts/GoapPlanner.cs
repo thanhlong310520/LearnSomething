@@ -9,10 +9,10 @@ public class GoapPlanner
     {
         public Node parent;
         public float runningCost;
-        public WorldState state;
+        public WorldStateData state;
         public GoapAction action;
 
-        public Node(Node parent, float cost, WorldState state, GoapAction action)
+        public Node(Node parent, float cost, WorldStateData state, GoapAction action)
         {
             this.parent = parent;
             this.runningCost = cost;
@@ -26,7 +26,7 @@ public class GoapPlanner
     /// hoặc null nếu không tìm được kế hoạch.
     /// </summary>
     public Queue<GoapAction> Plan(
-        WorldState currentState,
+        WorldStateData currentState,
         Dictionary<string, bool> goal,
         List<GoapAction> availableActions)
     {
@@ -72,7 +72,7 @@ public class GoapPlanner
             if (parent.state.Satisfies(action.Preconditions))
             {
                 // Áp dụng effects để tạo state mới
-                WorldState newState = ApplyEffects(parent.state, action.Effects);
+                WorldStateData newState = ApplyEffects(parent.state, action.Effects);
 
                 var node = new Node(parent, parent.runningCost + action.Cost, newState, action);
 
@@ -95,7 +95,7 @@ public class GoapPlanner
         return foundPath;
     }
 
-    private WorldState ApplyEffects(WorldState state, Dictionary<string, bool> effects)
+    private WorldStateData ApplyEffects(WorldStateData state, Dictionary<string, bool> effects)
     {
         var newState = state.Clone();
         foreach (var kv in effects)
@@ -103,6 +103,6 @@ public class GoapPlanner
         return newState;
     }
 
-    private bool GoalAchieved(WorldState state, Dictionary<string, bool> goal)
+    private bool GoalAchieved(WorldStateData state, Dictionary<string, bool> goal)
         => state.Satisfies(goal);
 }
